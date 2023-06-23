@@ -3,6 +3,18 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { getUserByEmailIdAndPassword, getUserById} from "../../controllers/userController";
 import { PassportStrategy } from '../../interfaces/index';
 
+// import user types from types.ts
+import Express from '../../types';
+
+// You can also use this method to namespace Express.User
+// declare global {
+//   namespace Express {
+//     interface User {  
+//         id: number;     
+//     }
+//   }
+// }
+
 const localStrategy = new LocalStrategy(
   {
     usernameField: "email",
@@ -21,14 +33,16 @@ const localStrategy = new LocalStrategy(
 /*
 FIX ME (types) 😭
 */
-passport.serializeUser(function (user: any, done: any) {
+passport.serializeUser(function (user: Express.User, done: (err: any, id?: number) => void) {
   done(null, user.id);
 });
 
 /*
 FIX ME (types) 😭
 */
-passport.deserializeUser(function (id: any, done: any) {
+
+// if we fetch email, the first argument of deserializeUser will be email
+passport.deserializeUser(function (id: number, done: (err: any, user?: false | Express.User | null | undefined) => void) {
   let user = getUserById(id);
   if (user) {
     done(null, user);

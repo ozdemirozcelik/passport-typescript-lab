@@ -1,5 +1,8 @@
 import {userModel} from "../models/userModel";
 
+
+// make sure to throw an error and generate error message, not returning null, refactor it
+
 const getUserByEmailIdAndPassword = (email: string, password: string) => {
   let user = userModel.findOne(email);
   if (user) {
