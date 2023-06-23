@@ -1,14 +1,13 @@
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import { PassportStrategy } from '../../interfaces/index';
 
-
-
+// Get github secrets
+import { CLIENT_ID, CLIENT_SECRET } from '../../config/secrets';
 
 const githubStrategy: GitHubStrategy = new GitHubStrategy(
     {
-        // 3 keys to github database, need to register oauth app on github
-        clientID: "764df98634360af00049",
-        clientSecret: "161a3e967a4804d16263c0de47b2d6786bedfea4",
+        clientID: CLIENT_ID,
+        clientSecret: CLIENT_SECRET,
         callbackURL: "http://localhost:8000/auth.github/callbak",
         passReqToCallback: true,
     },

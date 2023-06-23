@@ -1,17 +1,4 @@
 import express from "express";
-
-// normally you put it in a separate file (types.ts) and import it from types.ts
-// declare global {
-//   namespace Express {
-//     interface User {
-//       user: {
-//         id: number;
-//       }
-//     }
-//   }
-// }
-
-
 import passport from 'passport';
 import { forwardAuthenticated } from "../middleware/checkAuth";
 

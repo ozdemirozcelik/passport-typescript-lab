@@ -1,29 +1,35 @@
-const database = [
-  {
-    id: 1,
-    name: "Jimmy Smith",
-    email: "jimmy123@gmail.com",
-    password: "jimmy123!",
-  },
-  {
-    id: 2,
-    name: "Johnny Doe",
-    email: "johnny123@gmail.com",
-    password: "johnny123!",
-  },
-  {
-    id: 3,
-    name: "Jonathan Chen",
-    email: "jonathan123@gmail.com",
-    password: "jonathan123!",
-  },
-];
+import Express from '../types';
+
+// to load sample database synchronously
+// import { readFileSync } from 'fs';
+// const databaseDir = './models/database.json'
+// const database = JSON.parse(readFileSync(databaseDir, 'utf8'));
+
+// load sample database asynchronously
+import { readFile } from 'fs/promises';
+
+const databaseDir = './models/database.json'
+let database: any[]  = [];
+
+async function readDB(): Promise<void> {
+  try {
+    const jsonData: string = await readFile(databaseDir, 'utf-8');
+    database = JSON.parse(jsonData);
+    console.log(database);
+  } catch (error) {
+    throw new Error('Error reading database');
+  }
+}
+
+// Call the async function
+readDB();
+
 
 const userModel = {
 
   /* FIX ME (types) 😭 */
   findOne: (email: string) => {
-    const user = database.find((user) => user.email === email);
+    const user = database.find((user: Express.User) => user.email === email);
     if (user) {
       return user;
     }
@@ -31,7 +37,7 @@ const userModel = {
   },
   /* FIX ME (types) 😭 */
   findById: (id: number) => {
-    const user = database.find((user) => user.id === id);
+    const user = database.find((user: Express.User) => user.id === id);
     if (user) {
       return user;
     }
