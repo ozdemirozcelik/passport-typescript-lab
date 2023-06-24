@@ -15,7 +15,7 @@ async function readDB(): Promise<void> {
   try {
     const jsonData: string = await readFile(databaseDir, 'utf-8');
     database = JSON.parse(jsonData);
-    console.log(database);
+    // console.log(database);
   } catch (error) {
     throw new Error('Error reading database');
   }
@@ -33,10 +33,11 @@ const userModel = {
     if (user) {
       return user;
     }
+    // assignment requirement: return incorrect email
     throw new Error(`Couldn't find user with email: ${email}`);
   },
   /* FIX ME (types) 😭 */
-  findById: (id: number) => {
+  findById: (id: number, done: any) => {
     const user = database.find((user: Express.User) => user.id === id);
     if (user) {
       return user;

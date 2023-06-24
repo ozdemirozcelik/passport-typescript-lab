@@ -3,6 +3,8 @@ import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 import path from "path";
 import passportMiddleware from './middleware/passportMiddleware';
+// import for flash messages
+import flash from 'connect-flash';
 
 const port = process.env.port || 8000;
 
@@ -31,6 +33,8 @@ app.use(express.json());
 app.use(expressLayouts);
 app.use(express.urlencoded({ extended: true }));
 passportMiddleware(app);
+// middleware for flash messages
+app.use(flash());
 
 app.use((req, res, next) => {
   console.log(`User details are: `);

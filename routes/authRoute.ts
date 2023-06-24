@@ -13,19 +13,17 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
 
 
 router.get("/login", forwardAuthenticated, (req, res) => {
-  res.render("login");
+  res.render("login", { errorMessage: req.flash('error')[0] });
 })
 
-router.post(
-  "/login",
-  passport.authenticate("local", {
+
+router.post("/login", passport.authenticate("local", {
     successRedirect: "/dashboard",
     failureRedirect: "/auth/login",
     /* FIX ME: 😭 failureMsg needed when login fails */
-    // throw an error and generate error message
-    // failureMessage: true
-  })
-);
+    // The failureMessage: true option indicates that the failure message should be stored in the req.flash object
+    failureFlash: true,
+  }));
 
 router.get("/logout", (req, res) => {
   req.logout((err) => {

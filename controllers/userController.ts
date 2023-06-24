@@ -1,23 +1,37 @@
 import {userModel} from "../models/userModel";
 
 
-// make sure to throw an error and generate error message, not returning null, refactor it
-
 const getUserByEmailIdAndPassword = (email: string, password: string) => {
-  let user = userModel.findOne(email);
-  if (user) {
-    if (isUserValid(user, password)) {
-      return user;
+  
+  try{
+    let user = userModel.findOne(email);
+    if (user) {
+      if (isUserValid(user, password)) {
+        return [user,""];
+      } else {
+        // assignment requirement: return incorrect password
+        return [null,"Incorrect password."];
+      }
     }
+    return [null,""];
+  } catch (error:any) {
+    // assignment requirement: return incorrect email
+    return [null, error.message];
   }
-  return null;
 };
 const getUserById = (id:any) => {
-  let user = userModel.findById(id);
-  if (user) {
-    return user;
+  
+  try {
+    let user = userModel.findById(id,null);
+    if (user) {
+      return user;
+    }
+    return null;
+  } catch (error:any){
+    console.log(error.message);
+    //log error
   }
-  return null;
+
 };
 
 function isUserValid(user: any, password: string) {
