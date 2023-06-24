@@ -2,13 +2,16 @@ import { Strategy as GitHubStrategy } from 'passport-github2';
 import { PassportStrategy } from '../../interfaces/index';
 
 // Get github secrets
-import { CLIENT_ID, CLIENT_SECRET } from '../../config/secrets';
+// import { CLIENT_ID, CLIENT_SECRET, CALLBACK_URL } from '../../config/secrets';
+// Better: Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env
+require('dotenv').config();
+// console.log(process.env)
 
 const githubStrategy: GitHubStrategy = new GitHubStrategy(
     {
-        clientID: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        callbackURL: "http://localhost:8000/auth.github/callbak",
+        clientID: process.env.CLIENT_ID as string,
+        clientSecret: process.env.CLIENT_SECRET as string,
+        callbackURL: process.env.CALLBACK_URL as string,
         passReqToCallback: true,
     },
     
