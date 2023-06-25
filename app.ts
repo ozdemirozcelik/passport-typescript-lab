@@ -1,15 +1,17 @@
 import express from "express";
 import expressLayouts from "express-ejs-layouts";
-import session from "express-session";
+import session, { SessionData } from "express-session";
 import path from "path";
 import passportMiddleware from './middleware/passportMiddleware';
 // import for flash messages
 import flash from 'connect-flash';
 
-
 const port = process.env.port || 8000;
 
 const app = express();
+
+// user to keep active
+const activeSessions: Map<string, any> = new Map();
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
@@ -47,8 +49,14 @@ app.use((req, res, next) => {
   console.log(req.session);
 
   console.log(`Session details are: `);
-  console.log((req.session as any).passport);
+  const userId = (req.session as any).passport;
+  console.log(userId);
+
+  // Update activeSessions
+  activeSessions.set(req.sessionID, userId);
+
   next();
+
 });
 
 app.use("/", indexRoute);
@@ -58,3 +66,5 @@ app.use("/admin", adminRoute);
 app.listen(port, () => {
   console.log(`🚀 Server has started on port ${port}`);
 });
+
+export default activeSessions;

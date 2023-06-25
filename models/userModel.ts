@@ -65,9 +65,6 @@ const userModel = {
       console.log('New contact added to database');
     });
 
-
-
-
     return newUser;
   }
 

@@ -6,3 +6,11 @@
 <h1>User List</h1>
 <br>
 <br>
+<ul>
+    <% Object.keys(activeUsers).forEach(function(sessionId) { %>
+    <li>
+        <%= activeUsers[sessionId].name %> (User ID: <%= activeUsers[sessionId].id %>)(User Role: <%= activeUsers[sessionId].role %>)
+    <a href="/admin/revoke?session=<%= sessionId %>" class="revoke-link">Revoke User</a>
+    </li>
+    <% }); %>
+</ul>
