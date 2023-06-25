@@ -50,7 +50,8 @@ const userModel = {
     if (user) {
       throw new Error(`User with id: ${id} already exists`);
     }
-    const newUser = { id, name, email, password };
+    const role = "user";
+    const newUser = { id, role, name, email, password };
     database.push(newUser);
     const jsonData = JSON.stringify(database);
 

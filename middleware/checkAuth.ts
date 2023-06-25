@@ -21,3 +21,14 @@ export const forwardAuthenticated = (req: Request, res: Response, next: NextFunc
   }
   res.redirect("/dashboard");
 }
+
+// for admin page
+export const ensureAuthenticatedAsAdmin = (req: Request, res: Response, next: NextFunction) => {
+  if (req.isAuthenticated()) {
+
+    if (req.user.role === "admin")
+      return next();
+
+  }
+  res.redirect("/auth/login");
+}

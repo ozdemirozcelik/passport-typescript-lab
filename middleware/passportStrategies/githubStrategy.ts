@@ -29,7 +29,7 @@ const githubStrategy: GitHubStrategy = new GitHubStrategy(
             done(null, user);
           } else {
             // create new user
-            userModel.addOne(Number(profile.id), profile.displayName,"","");
+            userModel.addOne(Number(profile.id),profile.displayName,"","");
             done(null, user);
           }
 
