@@ -1,25 +1,41 @@
+import { getUserById} from "../../controllers/userController";
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import { PassportStrategy } from '../../interfaces/index';
 
 // Get github secrets
-// import { CLIENT_ID, CLIENT_SECRET, CALLBACK_URL } from '../../config/secrets';
-// Better: Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env
-require('dotenv').config();
+import { CLIENT_ID, CLIENT_SECRET, CALLBACK_URL } from '../../config/secrets';
+import { userModel } from "../../models/userModel";
+// TODO: Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env
+// require('dotenv').config();
 // console.log(process.env)
 
+
 const githubStrategy: GitHubStrategy = new GitHubStrategy(
+
     {
-        clientID: process.env.CLIENT_ID as string,
-        clientSecret: process.env.CLIENT_SECRET as string,
-        callbackURL: process.env.CALLBACK_URL as string,
+        clientID: CLIENT_ID as string,
+        clientSecret: CLIENT_SECRET as string,
+        callbackURL: CALLBACK_URL as string,
         passReqToCallback: true,
     },
     
     /* FIX ME 😭 */
     // this should be filled in with all the information from github callback
-    // very similar to local strategy, take email username and save it to database
-    async (req: any, accessToken: any, refreshToken: any, profile: any, done: any) => {},
+    async (req: any, accessToken: any, refreshToken: any, profile: any, done: any) => {
+        // console.log("*** GITHUB PROFILE ***");
+        // console.log(profile);
+        let user = getUserById(Number(profile.id));
+        if (user) {
+            done(null, user);
+          } else {
+            // create new user
+            userModel.addOne(Number(profile.id), profile.displayName,"","");
+            done(null, user);
+          }
+
+    },
 );
+
 
 const passportGitHubStrategy: PassportStrategy = {
     name: 'github',

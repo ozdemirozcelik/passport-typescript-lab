@@ -1,4 +1,5 @@
 import Express from '../types';
+const fs = require('fs');
 
 // to load sample database synchronously
 // import { readFileSync } from 'fs';
@@ -44,6 +45,33 @@ const userModel = {
     }
     throw new Error(`Couldn't find user with id: ${id}`);
   },
+  addOne: (id: number, name: string, email: string, password: string) => {
+    const user = database.find((user: Express.User) => user.id === id);
+    if (user) {
+      throw new Error(`User with id: ${id} already exists`);
+    }
+    const newUser = { id, name, email, password };
+    database.push(newUser);
+    const jsonData = JSON.stringify(database);
+
+    // Write the JSON data to a file
+    fs.writeFile('models/database.json', jsonData, 'utf8', (err:any) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      // log
+      console.log('New contact added to database');
+    });
+
+
+
+
+    return newUser;
+  }
+
+
+
 };
 
 export { database, userModel };

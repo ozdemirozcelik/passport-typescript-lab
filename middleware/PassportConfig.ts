@@ -14,9 +14,22 @@ export default class PassportConfig {
      private from the outside world. This way, we can GUARANTEE that our
      passport strategies are added when this class is created. ⭐️
     */
-    addStrategies(strategies: PassportStrategy[]): void {
+    // addStrategies(strategies: PassportStrategy[]): void {
+    //     strategies.forEach((passportStrategy: PassportStrategy) => {
+    //         passport.use(passportStrategy.name, passportStrategy.strategy);
+    //     });
+    // }
+
+    // to initialize the newly created PassportConfig object
+    constructor(strategies: PassportStrategy[]) {
+        this.addStrategies(strategies);
+    }
+
+    // can only be accessed and called from within the class itself
+    private addStrategies(strategies: PassportStrategy[]): void {
         strategies.forEach((passportStrategy: PassportStrategy) => {
             passport.use(passportStrategy.name, passportStrategy.strategy);
         });
     }
+
 }

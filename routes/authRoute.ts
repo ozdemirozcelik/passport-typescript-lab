@@ -4,10 +4,22 @@ import { forwardAuthenticated } from "../middleware/checkAuth";
 
 const router = express.Router();
 
-// add github login endpoint here
-router.get('/github', passport.authenticate('github', { scope: [ 'user:email' ] })); // send back email
-// github to send back data to this endpoint after user logs in
-router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/auth/login' }), (req, res) => {
+// Add github login endpoint here
+router.get('/github',
+  passport.authenticate('github', { scope: [ 'user:email' ] }),(req, res) => {
+    console.log("github login")
+    // The request will be redirected to GitHub for authentication, so this
+    // function will not be called.
+  }
+);
+
+// After authorization, GitHub will redirect the user
+// back to this application at /auth/github/callback
+router.get('/github/callback', passport.authenticate('github', { 
+  
+  failureRedirect: '/auth/login' 
+
+}), (req, res) => {
   res.redirect('/dashboard');
 });
 
